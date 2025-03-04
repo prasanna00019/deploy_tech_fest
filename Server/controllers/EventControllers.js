@@ -1,4 +1,4 @@
-import db from "../db";
+import db from "../db.js";
 export const createEvent = async (req, res) => {
     try {
       // Destructuring request body
