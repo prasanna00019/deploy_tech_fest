@@ -27,11 +27,11 @@ const deleteExpiredOtps = () => {
   };
   
   // Initial call to start the cron job
-  deleteExpiredOtps();
+  // deleteExpiredOtps();
   
   // Schedule task to run every 10 minutes
-  cron.schedule('*/10 * * * *', () => {
-    deleteExpiredOtps();
-  });
+  // cron.schedule('*/10 * * * *', () => {
+  //   deleteExpiredOtps();
+  // });
 
   export default deleteExpiredOtps;
