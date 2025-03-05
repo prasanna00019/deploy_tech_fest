@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import EventDetails from "@/components/ui/EventDetails";
-import NotificationCard from "@/components/ui/ NotificationCard";
+import NotificationCard from "@/components/ui/NotificationCard";
 import { HOST } from "@/utils/constants";
 
 const Details = () => {

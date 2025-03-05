@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import NotificationCard from "./ NotificationCard";
+import NotificationCard from "./NotificationCard";
 import { HOST } from "@/utils/constants";
 import { motion } from "framer-motion";
 

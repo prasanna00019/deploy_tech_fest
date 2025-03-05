@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaQrcode, FaFileUpload, FaCheckCircle } from "react-icons/fa";
 import spaceBg from "../assets/images/space-bg.png";
 import QRcode from "../assets/images/qr_code.jpg"
-import NotificationCard from "./ NotificationCard";
+import NotificationCard from "./NotificationCard";
 const PaymentGateway = () => {
   const [transactionId, setTransactionId] = useState("");
   const [screenshot, setScreenshot] = useState(null);
