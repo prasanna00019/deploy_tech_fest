@@ -7,7 +7,7 @@ import deleteExpiredOtps from "../otpCleaner.js";
 
 dotenv.config();
 
-// deleteExpiredOtps();
+deleteExpiredOtps();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 // Register a new user
