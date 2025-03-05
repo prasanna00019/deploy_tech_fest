@@ -1,24 +1,5 @@
 import db from "../db.js";
 
-// Get user profile (protected route)
-export const getUserProfile = async (req, res) => {
-    db.query('SELECT user_id, user_name, full_name, email, phone, college_name, user_photo_link, participated_event_id, created_at FROM users WHERE user_id = ?', 
-      [req.user.id], 
-      (err, results) => {
-        if (err) {
-          console.error('Error fetching user profile:', err);
-          return res.status(500).json({ error: 'Database error' });
-        }
-        
-        if (results.length === 0) {
-          return res.status(404).json({ error: 'User not found' });
-        }
-        
-        res.json(results[0]);
-      }
-    );
-  };
-  
   // Update user profile (protected route)
   export const updateUserProfile = (req, res) => {
     const { fullName, email, phone, collegeName, userPhotoLink, participatedEventId } = req.body;
@@ -26,7 +7,7 @@ export const getUserProfile = async (req, res) => {
     // Build update query dynamically based on provided fields
     let updateFields = [];
     let queryParams = [];
-    
+
     if (fullName) {
       updateFields.push('full_name = ?');
       queryParams.push(fullName);
@@ -161,5 +142,3 @@ export const getUserProfile = async (req, res) => {
       }
     );  
   };
-
-  

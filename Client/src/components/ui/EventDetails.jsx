@@ -50,11 +50,7 @@ const EventDetails = ({ event }) => {
 
           {/* Details Tab */}
           <TabsContent value="details" className="mt-6">
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
+            <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <motion.img
                   src={event.image}
@@ -64,6 +60,7 @@ const EventDetails = ({ event }) => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8 }}
+                  onError={(e) => (e.target.src = "https://via.placeholder.com/500")}
                 />
               </div>
 
@@ -79,32 +76,24 @@ const EventDetails = ({ event }) => {
                     {event.description}
                   </motion.p>
                 </div>
-
-                <motion.p className="mt-4 text-2xl font-semibold text-green-400">
-                  {event.prize}
-                </motion.p>
               </div>
             </motion.div>
 
             <motion.div className="mt-8 p-4 bg-white/5 rounded-lg">
               <h3 className="text-xl font-semibold text-purple-300 mb-2">Registration Details</h3>
               <div className="grid grid-cols-2 gap-4 text-gray-200">
-                <p>Deadline: {event.registration?.deadline}</p>
-                <p>Fee: {event.registration?.fee}</p>
+                <p>Deadline: {event.registrationDeadline}</p>
+                <p>Fee: {event.fee}</p>
               </div>
             </motion.div>
           </TabsContent>
 
           {/* Rules Tab */}
           <TabsContent value="rules" className="mt-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-4"
-            >
+            <motion.div className="space-y-4">
               <h3 className="text-2xl font-semibold text-purple-300 mb-4">Event Rules</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-200">
-                {event.rules?.map((rule, index) => (
+                {event.rules.map((rule, index) => (
                   <li key={index}>{rule}</li>
                 ))}
               </ul>
@@ -113,35 +102,15 @@ const EventDetails = ({ event }) => {
 
           {/* Contact Tab */}
           <TabsContent value="contact" className="mt-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6"
-            >
+            <motion.div className="space-y-6">
               <h3 className="text-2xl font-semibold text-purple-300 mb-4">Contact Information</h3>
-              <div className="grid gap-6 md:grid-cols-2">
-                {event.coordinators?.map((coordinator, index) => (
-                  <div 
-                    key={index}
-                    className="p-4 bg-white/5 rounded-lg"
-                  >
-                    <h4 className="text-xl font-semibold text-white mb-2">{coordinator.name}</h4>
-                    <p className="text-purple-300">{coordinator.designation}</p>
-                    <p className="text-gray-200">{coordinator.contact}</p>
-                  </div>
-                ))}
-              </div>
+              <p className="text-gray-200">{event.coordinator}</p>
             </motion.div>
           </TabsContent>
         </Tabs>
 
         {/* Action Buttons */}
-        <motion.div 
-          className="flex flex-wrap justify-center gap-6 mt-8"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        <motion.div className="flex flex-wrap justify-center gap-6 mt-8">
           <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700">
             Register Now
           </Button>

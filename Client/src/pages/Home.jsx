@@ -1,30 +1,50 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import Events from "../components/ui/Events"
+import Events from "../components/ui/Events";
 import SponsorsPage from "./Sponsors";
 import spaceBg from "../assets/images/space-bg.png";
 import themeIllustration from "../assets/images/theme-illustration.jpg";
-import StarEffect from '../components/ui/StarEffect';
-
+import StarEffect from "../components/ui/StarEffect";
 
 const Home = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const token = localStorage.getItem("authToken");
+  const initials = localStorage.getItem("userInitials");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = () => {
+      if (token && initials) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+  }, [token, initials]);
+
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.8 }
+    transition: { duration: 0.8 },
   };
 
   return (
     <div className="min-h-screen relative">
       {/* Background Image */}
-      <div 
+      <div
         className="fixed inset-0 z-0"
         style={{
           backgroundImage: `url(${spaceBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
         }}
       />
 
@@ -33,7 +53,7 @@ const Home = () => {
         {/* Hero Section */}
         <section className="min-h-screen flex items-center justify-center px-4 md:px-6 lg:px-8">
           <StarEffect />
-          <motion.div 
+          <motion.div
             className="text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -43,11 +63,18 @@ const Home = () => {
               FLUX'25
             </h1>
             <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
-              Explore the frontiers of technology in our space-themed tech extravaganza
+              Explore the frontiers of technology in our space-themed tech
+              extravaganza
             </p>
-            <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
-              Register Now
-            </Button>
+            {!isAuthenticated && (
+              <Button
+                size="lg"
+                className="bg-purple-600 hover:bg-purple-700 relative z-20"
+                onClick={() => navigate("/register")}
+              >
+                Register Now
+              </Button>
+            )}
           </motion.div>
         </section>
 
@@ -82,10 +109,10 @@ const Home = () => {
             </div>
           </div>
         </motion.section> */}
-        <Events/>
+        <Events />
 
         {/* Theme Section */}
-        <motion.section 
+        <motion.section
           {...fadeInUp}
           className="min-h-screen py-16 px-4 md:px-6 lg:px-8 backdrop-brightness-100"
         >
@@ -94,29 +121,28 @@ const Home = () => {
               Theme: Beyond the Stars
             </h2>
             <div className="grid md:grid-cols-2 gap-8 items-center">
-              <motion.div 
-                {...fadeInUp}
-                className="space-y-6 text-gray-200"
-              >
+              <motion.div {...fadeInUp} className="space-y-6 text-gray-200">
                 <p className="text-lg">
-                  Embark on a journey through the cosmos at Techno Festival 2025. This year's theme explores
-                  the boundless possibilities of space technology and innovation reaching Beyond the Stars.
+                  Embark on a journey through the cosmos at Techno Festival
+                  2025. This year's theme explores the boundless possibilities
+                  of space technology and innovation reaching Beyond the Stars.
                 </p>
                 <p className="text-lg">
-                  From artificial intelligence in space exploration to sustainable space habitats,
-                  discover how technology is shaping our future among the stars.
+                  From artificial intelligence in space exploration to
+                  sustainable space habitats, discover how technology is shaping
+                  our future among the stars.
                 </p>
               </motion.div>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
                 className="rounded-lg overflow-hidden"
               >
-                <img 
-                  src={themeIllustration} 
-                  alt="Space Theme" 
+                <img
+                  src={themeIllustration}
+                  alt="Space Theme"
                   className="w-full h-auto rounded-lg"
                 />
               </motion.div>
@@ -125,7 +151,7 @@ const Home = () => {
         </motion.section>
 
         {/* Team Section */}
-        <motion.section 
+        <motion.section
           {...fadeInUp}
           className="min-h-screen py-16 px-4 md:px-6 lg:px-8 bg-black/40 backdrop-blur-sm"
         >
@@ -150,7 +176,9 @@ const Home = () => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-white font-semibold">Team Member {member}</h3>
+                  <h3 className="text-white font-semibold">
+                    Team Member {member}
+                  </h3>
                   <p className="text-gray-300 text-sm">Position</p>
                 </motion.div>
               ))}
@@ -187,7 +215,7 @@ const Home = () => {
             </div>
           </div>
         </motion.section> */}
-        <SponsorsPage/>
+        <SponsorsPage />
       </div>
     </div>
   );

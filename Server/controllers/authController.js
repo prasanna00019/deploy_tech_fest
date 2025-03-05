@@ -3,14 +3,17 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import db from "../db.js";
 import nodemailer from "nodemailer";
+import deleteExpiredOtps from "../otpCleaner.js";
 
 dotenv.config();
+
+deleteExpiredOtps();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 // Register a new user
 export const register = async (req, res) => {
     try {
-      const { userName, password, fullName, email, phone, collegeName, userPhotoLink, participatedEventId } = req.body;
+      const { userName, password, fullName, email, phone, collegeName, userPhotoLink } = req.body;
       
       // Validate required fields
       if (!userName || !password || !fullName || !email) {
@@ -34,13 +37,13 @@ export const register = async (req, res) => {
         // Insert new user
         const insertQuery = `
           INSERT INTO users 
-          (user_name, hashed_password, full_name, email, phone, college_name, user_photo_link, participated_event_id) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          (user_name, hashed_password, full_name, email, phone, college_name, user_photo_link) 
+          VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
         
         db.query(
           insertQuery, 
-          [userName, hashedPassword, fullName, email, phone, collegeName, userPhotoLink, participatedEventId],
+          [userName, hashedPassword, fullName, email, phone, collegeName, userPhotoLink],
           (err, result) => {
             if (err) {
               console.error('Error registering user:', err);
@@ -75,15 +78,15 @@ export const register = async (req, res) => {
 // Login
 export const login = async (req, res) => {
     try {
-      const { userName, password } = req.body;
+      const { email, password } = req.body;
       
       // Validate input
-      if (!userName || !password) {
+      if (!email || !password) {
         return res.status(400).json({ error: 'Username and password are required' });
       }
       
       // Find user
-      db.query('SELECT * FROM users WHERE user_name = ?', [userName], async (err, results) => {
+      db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
         if (err) {
           console.error('Login error:', err);
           return res.status(500).json({ error: 'Database error' });
@@ -112,11 +115,19 @@ export const login = async (req, res) => {
           JWT_SECRET, 
           { expiresIn: '24h' }
         );
+
+        const getInitials = (fullName) => {
+          return fullName
+            .split(' ')
+            .map(name => name.charAt(0).toUpperCase())
+            .join('');
+        };
         
         res.status(200).json({
           message: 'Login successful',
           userId: user.user_id,
-          token: token
+          token: token,
+          userInitials: getInitials(user.full_name)
         });
       });
     } catch (error) {
@@ -161,20 +172,44 @@ export const sendOtp = async (req, res) => {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
-        subject: 'Your OTP Code',
+        subject: 'Verify Your FLUX Registration',
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd;">
-            <div style="text-align: center;">
-              <img src="https://i.imgur.com/CUfYqLm.jpeg" alt="BookMyTrip Logo" style="max-width: 100px; margin-bottom: 20px;">
+          <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto; padding: 30px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #fff; border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <img src="https://i.imgur.com/3tOCkhX.jpeg" alt="FLUX Logo" style="max-width: 150px; border-radius: 10px; box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);">
             </div>
-            <h2 style="text-align: center; color: #333;">Verify your email address</h2>
-            <p>You need to verify your email address to continue using your account. Enter the following code to verify your email address:</p>
-            <h1 style="text-align: center; color: #333;">${otp}</h1>
-            <p style="text-align: center; color: #777;">This OTP is valid for 5 minutes.</p>
-            <hr>
-            <p style="color: #777; font-size: 12px; text-align: center;">
-              If you did not request this code, please ignore this email.
-            </p>
+            
+            <h1 style="text-align: center; color: #fff; font-size: 28px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);">
+              Welcome to FLUX 2024
+            </h1>
+      
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid rgba(147, 51, 234, 0.3);">
+              <h2 style="text-align: center; color: #a855f7; margin-bottom: 15px; font-size: 24px;">
+                Your Verification Code
+              </h2>
+              <div style="text-align: center; letter-spacing: 8px; font-size: 36px; font-weight: bold; color: #fff; padding: 15px; background: rgba(147, 51, 234, 0.2); border-radius: 8px; margin: 10px 0;">
+                ${otp}
+              </div>
+              <p style="text-align: center; color: #94a3b8; margin-top: 15px; font-size: 14px;">
+                This code will expire in 5 minutes
+              </p>
+            </div>
+      
+            <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; text-align: center;">
+              <h3 style="color: #a855f7; margin-bottom: 15px; font-size: 18px;">Need Help?</h3>
+              <p style="color: #94a3b8; margin-bottom: 5px;">Contact our support team:</p>
+              <p style="color: #fff; margin-bottom: 5px;">Email: president.ssenate@iitram.ac.in</p>
+              <p style="color: #fff;">📱 +91 9925061044</p>
+            </div>
+      
+            <div style="margin-top: 30px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(147, 51, 234, 0.3);">
+              <p style="color: #94a3b8; font-size: 12px;">
+                This is an automated message. Please do not reply directly to this email.
+              </p>
+              <p style="color: #94a3b8; font-size: 12px; margin-top: 5px;">
+                FLUX 2024 - IITRAM's Annual Technical Festival
+              </p>
+            </div>
           </div>
         `,
       };
@@ -193,52 +228,38 @@ export const sendOtp = async (req, res) => {
 };
 
 export const verifyOtp = async (req, res) => {
-  const { email, username, password, otp } = req.body;
+  const { email, otp } = req.body;
 
   // Check OTP in the database
   const checkOtpQuery = "SELECT otp, created_at FROM otp_store WHERE email = ? ORDER BY created_at DESC LIMIT 1";
+  
   db.query(checkOtpQuery, [email], (err, result) => {
     if (err) {
-      console.log(err);
-      return res.json({ Error: "Database error" });
-    }
-    if (result.length === 0 || result[0].otp !== otp) {
-      return res.json({ Error: "Invalid OTP" });
+      console.error(err);
+      return res.status(500).json({ Error: "Database error" });
     }
 
-    // Check if OTP is expired
+    if (result.length === 0 || result[0].otp !== otp) {
+      return res.status(400).json({ Error: "Invalid OTP" });
+    }
+
+    // Check if OTP is expired (5 minutes = 300 seconds)
     const otpTimestamp = new Date(result[0].created_at);
     const currentTime = new Date();
-    const timeDifference = Math.floor((currentTime - otpTimestamp) / 1000); // in seconds
+    const timeDifference = Math.floor((currentTime - otpTimestamp) / 1000);
 
-    if (timeDifference > 300) { // 5 minutes = 300 seconds
-      return res.json({ Error: "OTP expired" });
+    if (timeDifference > 300) {
+      return res.status(400).json({ Error: "OTP expired" });
     }
 
-    bcrypt.hash(password.toString(), salt, (err, hashedPassword) => {
+    // Remove OTP after successful verification
+    const deleteOtpQuery = "DELETE FROM otp_store WHERE email = ?";
+    db.query(deleteOtpQuery, [email], (err, deleteResult) => {
       if (err) {
-        console.log(err);
-        return res.json({ Error: "Failed to hash password" });
+        console.error(err);
+        return res.status(500).json({ Error: "Error cleaning up OTP" });
       }
-
-      const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-      const values = [username, email, hashedPassword];
-
-      db.query(sql, values, (err, result) => {
-        if (err) {
-          console.log(err);
-          return res.json({ Error: "Failed to register" });
-        } else {
-          // Remove OTP from store
-          const deleteOtpQuery = "DELETE FROM otp_store WHERE email = ?";
-          db.query(deleteOtpQuery, [email], (err, result) => {
-            if (err) {
-              console.log(err);
-            }
-          });
-          return res.json({ status: "success" });
-        }
-      });
+      return res.status(200).json({ status: "success", message: "OTP verified successfully" });
     });
   });
 };
@@ -271,20 +292,44 @@ export const resendOtp = async (req, res) => {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
-        subject: 'Your New OTP Code',
+        subject: 'Your New FLUX Verification Code',
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd;">
-            <div style="text-align: center;">
-              <img src="https://i.imgur.com/CUfYqLm.jpeg" alt="BookMyTrip Logo" style="max-width: 100px; margin-bottom: 20px;">
+          <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto; padding: 30px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 27, 75, 0.8) 100%); color: #fff; border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <img src="https://i.imgur.com/3tOCkhX.jpeg" alt="FLUX Logo" style="max-width: 150px; border-radius: 10px; box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);">
             </div>
-            <h2 style="text-align: center; color: #333;">Verify your email address</h2>
-            <p>You need to verify your email address to continue using your account. Enter the following code to verify your email address:</p>
-            <h1 style="text-align: center; color: #333;">${otp}</h1>
-            <p style="text-align: center; color: #777;">This OTP is valid for 5 minutes.</p>
-            <hr>
-            <p style="color: #777; font-size: 12px; text-align: center;">
-              If you did not request this code, please ignore this email.
-            </p>
+            
+            <h1 style="text-align: center; color: #fff; font-size: 28px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(147, 51, 234, 0.3);">
+              New Verification Code
+            </h1>
+      
+            <div style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid rgba(147, 51, 234, 0.2);">
+              <h2 style="text-align: center; color: #a855f7; margin-bottom: 15px; font-size: 24px;">
+                Your New Verification Code
+              </h2>
+              <div style="text-align: center; letter-spacing: 8px; font-size: 36px; font-weight: bold; color: #fff; padding: 15px; background: rgba(147, 51, 234, 0.15); border-radius: 8px; margin: 10px 0;">
+                ${otp}
+              </div>
+              <p style="text-align: center; color: #94a3b8; margin-top: 15px; font-size: 14px;">
+                This code will expire in 5 minutes
+              </p>
+            </div>
+      
+            <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; text-align: center;">
+              <h3 style="color: #a855f7; margin-bottom: 15px; font-size: 18px;">Need Help?</h3>
+              <p style="color: #94a3b8; margin-bottom: 5px;">Contact our support team:</p>
+              <p style="color: #fff; margin-bottom: 5px;">Email: president.ssenate@iitram.ac.in</p>
+              <p style="color: #fff;">📱 +91 9925061044</p>
+            </div>
+      
+            <div style="margin-top: 30px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(147, 51, 234, 0.2);">
+              <p style="color: #94a3b8; font-size: 12px;">
+                This is an automated message. Please do not reply directly to this email.
+              </p>
+              <p style="color: #94a3b8; font-size: 12px; margin-top: 5px;">
+                FLUX 2024 - IITRAM's Annual Technical Festival
+              </p>
+            </div>
           </div>
         `,
       };
@@ -301,4 +346,3 @@ export const resendOtp = async (req, res) => {
     });
   });
 };
-

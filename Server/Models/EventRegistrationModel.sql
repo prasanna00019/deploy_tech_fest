@@ -4,6 +4,8 @@ CREATE TABLE Event_Registration (
   Registrant_ID INT,
   Admin_accepted BOOLEAN DEFAULT FALSE,
   Participants_ID ARRAY[5] INT,
+  Team_Name VARCHAR(255) NULL,
+  Team_photoLink VARCHAR(255) NULL,
   Payment_ID INT,
   FOREIGN KEY (Payment_ID) REFERENCES Payment(Payment_ID)
 );

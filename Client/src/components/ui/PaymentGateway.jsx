@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaQrcode, FaFileUpload, FaCheckCircle } from "react-icons/fa";
 import spaceBg from "../assets/images/space-bg.png";
 import QRcode from "../assets/images/qr_code.jpg"
+import NotificationCard from "./ NotificationCard";
 const PaymentGateway = () => {
   const [transactionId, setTransactionId] = useState("");
   const [screenshot, setScreenshot] = useState(null);
@@ -15,7 +16,8 @@ const PaymentGateway = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert("Payment details submitted successfully!");
+    // alert("Payment details submitted successfully!");
+    <NotificationCard type="success" message="Payment details submitted successfully!" />
   };
 
   return (
