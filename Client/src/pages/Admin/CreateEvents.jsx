@@ -56,7 +56,7 @@ const CreateEvent = () => {
         }
 
         // Remove localhost:5000 from the URL and replace with HOST
-        imageUrl = uploadResponse.data.fileUrl.replace('http://localhost:5000', HOST);
+        imageUrl = uploadResponse.data.fileUrl.replace('https://deploy-tech-fest.onrender.com', HOST);
       }
 
       // Create the event payload with the image URL
