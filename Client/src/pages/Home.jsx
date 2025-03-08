@@ -1,12 +1,20 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { FaLinkedin } from "react-icons/fa";
 import Events from "../components/ui/Events";
 import SponsorsPage from "./Sponsors";
 import spaceBg from "../assets/images/space-bg.png";
 import themeIllustration from "../assets/images/theme-illustration.jpg";
 import StarEffect from "../components/ui/StarEffect";
+import jayesh from "../assets/images/jayesh.jpg"
+import ayaan from "../assets/images/ayaan.jpg"
+import namra from "../assets/images/namra.jpg"
+import prasanna from "../assets/images/prasanna.jpg"
+import om from "../assets/images/om.jpg"
+import hemanshu from "../assets/images/hemanshu.jpg"
+import ayaan1 from "../assets/images/ayaan1.jpg"
 
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -78,37 +86,7 @@ const Home = () => {
           </motion.div>
         </section>
 
-        {/* Events Section */}
-        {/* <motion.section 
-          {...fadeInUp}
-          className="min-h-screen flex items-center py-16 px-4 md:px-6 lg:px-8 bg-black/40 backdrop-blur-sm"
-        >
-          /*<div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-12">
-              Featured Events
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                { title: "Hackathon", desc: "24-hour coding challenge to solve space-related problems" },
-                { title: "RoboWars", desc: "Battle of autonomous robots in simulated space conditions" },
-                { title: "Space Talk", desc: "Conference with leading space technology experts" }
-              ].map((event, index) => (
-                <motion.div
-                  key={event.title}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.2 }}
-                  className="bg-white/10 backdrop-blur-md rounded-lg p-6 hover:transform hover:scale-105 transition-transform duration-300"
-                >
-                  <h3 className="text-xl font-semibold text-white mb-3">{event.title}</h3>
-                  <p className="text-gray-300">{event.desc}</p>
-                  <Button variant="outline" className="mt-4">Learn More</Button>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section> */}
+        {/* Events Section */}       
         <Events />
 
         {/* Theme Section */}
@@ -155,31 +133,82 @@ const Home = () => {
           {...fadeInUp}
           className="min-h-screen py-16 px-4 md:px-6 lg:px-8 bg-black/40 backdrop-blur-sm"
         >
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-12">
               Meet Our Team
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((member) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 max-w-4xl mx-auto">
+              {[
+                {
+                  name: "Ayaan Himani",
+                  position: "Technical Lead",
+                  image: ayaan,
+                  linkedin:"http://www.linkedin.com/in/ayaan-himani-1a4923287",
+                },
+                {
+                  name: "Namra Patel",
+                  position: "Backend Developer",
+                  image: namra,
+                  linkedin:"http://www.linkedin.com/in/namra-patel-nsa",
+                },
+                {
+                  name: "Jayesh Belsare",
+                  position: "Frontend Developer",
+                  image: jayesh,
+                  linkedin:"http://www.linkedin.com/in/jayeshbelsare",
+                },
+                {
+                  name: "Om Patel",
+                  position: "Backend Developer",
+                  image: om,
+                  linkedin:"https://www.linkedin.com/in/om-patel-36aa25257?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+                },
+                {
+                  name: "Hemanshu Tala",
+                  position: "Frontend Developer",
+                  image: hemanshu,
+                  linkedin:"https://www.linkedin.com/in/hemanshu-tala-679955288?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+                },
+                {
+                  name: "Prasanna Halakarnimath",
+                  position: "Backend Developer",
+                  image: prasanna,
+                  linkedin:"https://www.linkedin.com/in/prasanna-h-28b07b27b",
+                },
+              ].map((member, index) => (
                 <motion.div
-                  key={member}
+                  key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                  className="text-center"
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-center group"
                 >
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-purple-600/20">
-                    <img
-                      src={`/team-member-${member}.jpg`}
-                      alt={`Team Member ${member}`}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="relative w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-r from-purple-600/20 to-blue-600/20 p-1 transition-transform duration-300 transform group-hover:scale-105">
+                    <div className="w-full h-full rounded-full overflow-hidden">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                      {member.linkedin && (
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        >
+                          <FaLinkedin className="text-3xl text-white hover:text-blue-500 transition-colors" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="text-white font-semibold">
-                    Team Member {member}
+                  <h3 className="text-white font-semibold text-lg mb-1 group-hover:text-purple-400 transition-colors">
+                    {member.name}
                   </h3>
-                  <p className="text-gray-300 text-sm">Position</p>
+                  <p className="text-gray-300 text-sm bg-purple-600/10 rounded-full px-4 py-1 inline-block">
+                    {member.position}
+                  </p>
                 </motion.div>
               ))}
             </div>

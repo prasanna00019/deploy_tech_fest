@@ -1,48 +1,21 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import NotificationCard from "./NotificationCard";
-import { HOST } from "@/utils/constants";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-const EventCards = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const EventCards = ({ events = [] }) => {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(`${HOST}/api/event/all-events`);
-
-        if (!response.data.events || !Array.isArray(response.data.events)) {
-          throw new Error("Invalid data format received");
-        }
-
-        setEvents(response.data.events);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
-  if (loading)
+  if (events.events.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white text-lg animate-pulse">
-        Loading events...
+      <div className="min-h-screen flex items-center justify-center text-white text-lg">
+        No events available
       </div>
     );
-
-  if (error) return <NotificationCard type="error" message={error} />;
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {events.map((event) => (
+        {events.events.map((event) => (
           <motion.div
             key={event.Event_ID}
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +32,7 @@ const EventCards = () => {
               transition={{ duration: 0.3 }}
             >
               <img 
-                src={event.Event_photo_link} 
+                src={event.Event_photo_link}
                 alt={event.Event_name}
                 className="w-full h-full object-cover"
               />
@@ -68,41 +41,41 @@ const EventCards = () => {
 
             {/* Content Section */}
             <div className="p-6 space-y-4">
-              {/* Title */}
               <h3 className="text-xl font-bold text-white">{event.Event_name}</h3>
               
-              {/* Event Details */}
               <div className="space-y-3 text-gray-300">
-                <p>📅 {new Date(event.Event_date).toDateString()}</p>
+                <p>📅 {event.Event_timeline}</p>
                 <p>📍 {event.Event_location}</p>
-                {event.Event_fees && <p className="text-white font-semibold">💰 ₹{event.Event_fees}</p>}
-                <p>📞 {event.Event_coordinator_contact}</p>
+                {event.Event_fees && (
+                  <p className="text-white font-semibold">
+                    💰 ₹{event.Event_fees}
+                  </p>
+                )}
               </div>
               
-              {/* Description */}
-              <p className="text-gray-400 line-clamp-2">{event.Event_description}</p>
+              <p className="text-gray-400 line-clamp-2">
+                {event.Event_description}
+              </p>
               
               {/* Action Buttons */}
               <div className="pt-4 flex gap-3">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
-            onClick={() => window.location.href = event.registerLink}
-          >
-            Register Now
-          </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-4 py-2.5 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors duration-200"
-              onClick={() => window.location.href = `/event-details/${event.Event_ID}`}
-              
-            >
-              Details
-            </motion.button>
-        
-        </div>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
+                  onClick={() => navigate(`/event-registration/${event.Event_ID}`)}
+                >
+                  Register Now
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-2.5 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                  onClick={() => navigate(`/event-details/${event.Event_ID}`)}
+                >
+                  Details
+                </motion.button>
+              </div>
             </div>
           </motion.div>
         ))}

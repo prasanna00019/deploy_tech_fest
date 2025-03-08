@@ -23,7 +23,7 @@ export default function NotificationCard({ type, message }) {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 50, opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-3
+          className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-3 z-50
             ${isSuccess ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}
           style={{
             background: isSuccess

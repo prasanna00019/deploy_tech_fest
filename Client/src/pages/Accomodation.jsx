@@ -12,7 +12,7 @@ const Accommodation = () => {
             
             <div className="bg-black bg-opacity-80 shadow-lg rounded-xl p-8 max-w-lg w-full border border-violet-500">
                 <p className="text-lg mb-6 text-blue-300 leading-relaxed">
-                    We provide comfortable and affordable accommodation for all participants of our Tech Fest. 
+                    We provide comfortable and affordable accommodation for all participants of our Technical Festival (FLUX). 
                     Our facilities come with all the necessary amenities to ensure a pleasant stay.
                 </p>
                 
@@ -20,12 +20,12 @@ const Accommodation = () => {
                 
                 <div className="flex items-center mb-4 space-x-3">
                     <User className="text-blue-300" size={24} />
-                    <p className="text-lg text-white">Name: John Doe</p>
+                    <p className="text-lg text-white">Name: Tarang Lotwala (Technical Secretary)</p>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                     <PhoneCall className="text-blue-300" size={24} />
-                    <p className="text-lg text-white">Contact No: +1 234 567 890</p>
+                    <p className="text-lg text-white">Contact No: +91 9925061044</p>
                 </div>
             </div>
         </div>

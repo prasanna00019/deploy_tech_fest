@@ -1,8 +1,8 @@
 import express from 'express';
 import { createEvent, deleteEventById, getAllEvents,
 getEventDetailsofSpecificEvent, getRandomEvents, updateEventById } from '../controllers/EventController.js';
-import {registerForEvent,getRegistrationsForEvent,getUserEvents} from '../controllers/registrationController.js';
-const  router= express.Router();
+import {registerForEvent,getRegistrationsForEvent,getUserEvents, getAllRegistrations, updateRegistration} from '../controllers/registrationController.js';
+const router= express.Router();
 router.post('/create-event',createEvent);
 router.get('/all-events',getAllEvents);
 router.get('/random-events',getRandomEvents);
@@ -15,4 +15,6 @@ router.post("/register", registerForEvent);
 router.get("/:event_id/registrations", getRegistrationsForEvent);
 // Get events a user has registered for
 router.get("/user/:user_id/events", getUserEvents);
+router.get("/getAllRegistrations", getAllRegistrations);
+router.put("/updateRegistration", updateRegistration);
 export default router;

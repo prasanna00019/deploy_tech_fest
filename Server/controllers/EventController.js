@@ -35,13 +35,13 @@ export const createEvent = async (req, res) => {
                 // Insert new event
                 const insertQuery = `
                     INSERT INTO Events 
-                    (Event_name, Event_description, Event_photo_link, Event_coordinator_description, MaxTeam_Size, Event_fees, Event_timeline, Event_Location, Event_registration_deadline) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    (Event_name, Event_description, Event_photo_link, Event_coordinator_description, MaxTeam_Size, Event_fees, Event_timeline, Event_Location, Event_registration_deadline, Event_rules) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 `;
 
                 db.query(
                     insertQuery,
-                    [Event_name, Event_description, Event_photo_link, Event_coordinator_description, MaxTeam_Size, Event_fees, Event_timeline, Event_location, Event_registration_deadline],
+                    [Event_name, Event_description, Event_photo_link, Event_coordinator_description, MaxTeam_Size, Event_fees, Event_timeline, Event_location, Event_registration_deadline, Event_rules],
                     (err, result) => {
                         if (err) {
                             console.error("Error creating event:", err);
@@ -80,7 +80,7 @@ export const getRandomEvents = (req, res) => {
     } catch (err) {
         console.error("❌ Error fetching random events:", err);
         res.status(500).json({ message: "Internal Server Error" });
-    }
+    }
 };
 export const getAllEvents = (req, res) => {
   try {
@@ -93,7 +93,7 @@ export const getAllEvents = (req, res) => {
       if (events.length === 0) {
         return res.status(404).json({ message: "No events found" });
       }
-        return res.status(200).json({ events });
+        return res.status(200).json({ events: events });
     });
   } catch (err) {
     console.error("Error fetching events:", err);

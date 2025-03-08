@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import TechSpinner from "@/components/ui/TechSpinner";
 import NotificationCard from "@/components/ui/NotificationCard";
-// import ErrorModal from "@/components/ui/ErrorModal";
-// import LoadingSpinner from "@/components/ui/LoadingSpinner";
+
 const Login = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);

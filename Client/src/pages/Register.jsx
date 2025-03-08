@@ -5,6 +5,8 @@ import Select from "react-select";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { HOST } from "@/utils/constants";
+import TechSpinner from "@/components/ui/TechSpinner";
+import NotificationCard from "@/components/ui/NotificationCard";
 // import ErrorModal from "@/components/ui/ErrorModal";
 // import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -122,9 +124,8 @@ const Register = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black px-4 font-['Inter'] overflow-y-auto">
-            {loading}
-            {/* && <LoadingSpinner />} */}
-            {/* {error && <ErrorModal message={error} onClose={() => setError(null)} />} */}
+            {loading && <TechSpinner />}
+            {error && <NotificationCard type={error} message={error} />}
 
             <div className="w-full max-w-md bg-black border border-blue-500 rounded-xl shadow-lg p-8 space-y-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-blue-500/50">
                 <h2 className="text-3xl font-semibold text-center text-blue-400 tracking-wide uppercase">
@@ -217,7 +218,7 @@ const Register = () => {
                         <>
                             {otpSent ? (
                                 <div className="text-center">
-                                    <p className="text-sm text-gray-400">Enter OTP sent to your phone</p>
+                                    <p className="text-sm text-gray-400">Enter OTP sent to your Email</p>
                                     <div className="flex justify-center space-x-2 mt-2">
                                         {otp.map((num, index) => (
                                             <input

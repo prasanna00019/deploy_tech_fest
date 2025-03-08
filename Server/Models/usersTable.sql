@@ -7,6 +7,5 @@ CREATE TABLE IF NOT EXISTS users (
       phone VARCHAR(20),
       college_name VARCHAR(100),
       user_photo_link VARCHAR(255),
-      participated_event_id VARCHAR(255),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )

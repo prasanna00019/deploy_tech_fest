@@ -142,3 +142,18 @@ import db from "../db.js";
       }
     );  
   };
+
+  export const getAllUsers = async(req, res) => {
+      db.query('SELECT * FROM users', (err, results) => {
+        if (err) {
+          console.error('Error fetching user profiles:', err);
+          return res.status(404).json({error : "Error fetching results"});
+        }
+        else if (results.length === 0){
+          return res.status(404).json({ error: 'No users are registered. Zero users registrations!' });
+        }
+        else{
+          return res.status(200).json(results);
+        } 
+      });
+  };

@@ -346,3 +346,49 @@ export const resendOtp = async (req, res) => {
     });
   });
 };
+
+export const verifyAdminPassword = async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password is required'
+      });
+    }
+
+    // Get the hashed admin password from environment variables
+    const hashedAdminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!hashedAdminPassword) {
+      console.error('Admin password hash not configured');
+      return res.status(500).json({
+        success: false,
+        message: 'Server configuration error'
+      });
+    }
+
+    // Compare the provided password with the hashed password
+    const isValid = await bcrypt.compare(password, hashedAdminPassword);
+
+    if (!isValid) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid admin password'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Admin verified successfully',
+    });
+
+  } catch (error) {
+    console.error('Admin verification error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};

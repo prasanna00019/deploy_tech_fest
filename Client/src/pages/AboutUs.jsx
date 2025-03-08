@@ -1,12 +1,13 @@
 import { Rocket, Users, Mail, Phone, MapPin } from "lucide-react"
 import TeamCarousel from "../components/ui/TeamCarousel"
+import IITRAM from "../assets/images/IITRAM.png"
 export default function AboutUs() {
     return (
         <div className="min-h-screen bg-gray-900 text-white">
             {/* Header */}
-            <header className="relative h-64 overflow-auto">
+            <header className="relative h-64 top-20 overflow-auto">
                 <img
-                    src="/IITRAM.png"
+                    src={IITRAM}
                     alt="Space themed header"
                     width={1600}
                     height={400}
@@ -25,9 +26,22 @@ export default function AboutUs() {
                         <Rocket className="mr-2" /> About Our College
                     </h2>
                     <p className="text-gray-300">
-                        Welcome to IITRAM, where we push the boundaries of innovation and explore the
-                        frontiers of science. Our annual TechFest brings together the brightest minds to showcase cutting-edge
-                        projects and ideas that are out of this world!
+                        Institute of Infrastructure, Technology, Research And Management
+                        has been established by the Government of Gujarat as an Autonomous
+                        University and has been mandated to bring about significant change in
+                        Engineering Education with respect to Technical and Managerial
+                        knowledge in the area of Infrastructure. The objective of this Institute
+                        is to serve as a Center of excellence in Research and Teaching in all
+                        areas pertaining to Infrastructure, and the Institute has a vision of
+                        acquiring a status of National importance in Infrastructure and related
+                        areas.
+                        <br />
+                        Institute of Infrastructure, Technology, Research And Management
+                        offers Bachelor and Master of Technology programs in Computer Enginnering, Civil
+                        Engineering, Mechanical Engineering, and Electrical Engineering. The
+                        Institute also offers Ph.D. studies in various fields in Basic Sciences,
+                        Engineering, Humanities and Social Sciences. The medium of
+                        instruction is English and the examination is also conducted in English.
                     </p>
                 </section>
 
@@ -51,11 +65,11 @@ export default function AboutUs() {
                         <div className="space-y-4">
                             <div className="flex items-center">
                                 <Phone className="mr-2" />
-                                <span>+1 (123) 456-7890</span>
+                                <span>+91 9925061044</span>
                             </div>
                             <div className="flex items-center">
                                 <Mail className="mr-2" />
-                                <span>contact@iitram.edu</span>
+                                <span>President.ssenate@iitram.ac.in</span>
                             </div>
                             <div className="flex items-start">
                                 <MapPin className="mr-2" />

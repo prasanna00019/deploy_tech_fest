@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
-
+import Jay from "../../assets/images/Jay.jpg";
+import DG from "../../assets/images/dg.jpg";
+import Tarang from "../../assets/images/tarang.jpg";
+import Ashta from "../../assets/images/astha.jpg";
+import Kushagra from "../../assets/images/Kushagra.png";
+import Devanshi from "../../assets/images/Devanshi.jpg";
+import pihu from "../../assets/images/pihu.png";
 const allTeamMembers = [
-  { id: 1, name: "Jane Doe", position: "Event Coordinator", image: "./dummy1.png" },
-  { id: 2, name: "John Smith", position: "Technical Lead", image: "./dummy2.png" },
-  { id: 3, name: "Alice Johnson", position: "Marketing Manager", image: "./dummy3.png" },
-  { id: 4, name: "Bob Williams", position: "Logistics Coordinator", image: "./dummy1.png" },
-  { id: 5, name: "Eva Brown", position: "Sponsorship Manager", image: "./dummy2.png" },
-  { id: 6, name: "Mike Davis", position: "Design Lead", image: "./dummy3.png" },
-  { id: 7, name: "Sarah Lee", position: "Public Relations", image: "./dummy1.png" },
-  { id: 8, name: "Tom Hardy", position: "Operations Manager", image: "./dummy2.png" },
+  { id: 1, name: "Pihu Saharan", position: "President", image: pihu },
+  { id: 2, name: "Jay Maganadiya", position: "Vice President", image: Jay  },
+  { id: 3, name: "Kushagra Gupta", position: "Vice President", image: Kushagra  },
+  { id: 4, name: "Tarang Lotwala", position: "Technical General Secretary", image: Tarang  },
+  { id: 5, name: "Dhritiman Ghosh", position: "Technical General Secretary", image: DG  },
+  { id: 6, name: "Aastha Motwani", position: "Technical General Secretary", image: Ashta  },
+  { id: 7, name: "Devanshi Goswami", position: "Technical General Secretary", image: Devanshi  },
 ];
 
 export default function TeamCarousel() {

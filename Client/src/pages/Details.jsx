@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import EventDetails from "@/components/ui/EventDetails";
 import NotificationCard from "@/components/ui/NotificationCard";
 import { HOST } from "@/utils/constants";
@@ -13,14 +14,10 @@ const Details = () => {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        const response = await fetch(`${HOST}/api/event/get-event-by-id/${eventId}`);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch event details");
-        }
-
-        const data = await response.json();
-        console.log("Fetched API Data:", data); // Debugging
+        const response = await axios.get(
+          `${HOST}/api/event/get-event-by-id/${eventId}`
+        );
+        const data = response.data;
 
         if (!data || !data.event) {
           throw new Error("Invalid event data received");
@@ -32,20 +29,16 @@ const Details = () => {
           id: eventData.Event_ID || "N/A",
           title: eventData.Event_name || "Untitled Event",
           description: eventData.Event_description || "No description available.",
-          timeline: eventData.Event_date 
-            ? new Date(eventData.Event_date).toLocaleDateString()
-            : "TBA",
-          rules: eventData.Event_rules 
-            ? eventData.Event_rules.split(";") 
-            : ["No specific rules provided."],
+          timeline: eventData.Event_timeline || "TBA",
+          rules: eventData.Event_rules ? eventData.Event_rules.split(',') : "No specific rules provided.",
           image: eventData.Event_photo_link 
             ? eventData.Event_photo_link 
-            : "https://via.placeholder.com/500", // Safe fallback
+            : "https://cdn4.iconfinder.com/data/icons/ui-beast-3/32/ui-49-4096.png", // Safe fallback
           venue: eventData.Event_location || "TBA",
           fee: eventData.Event_fees ? `₹${eventData.Event_fees}` : "Free",
           teamSize: eventData.MaxTeam_Size || "N/A",
           registrationDeadline: eventData.Event_registration_deadline || "TBA",
-          coordinator: eventData.Event_coordinator_contact || "Contact not available",
+          coordinator: eventData.Event_coordinator_description || "Contact not available",
         });
 
       } catch (err) {

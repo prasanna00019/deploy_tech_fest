@@ -9,6 +9,17 @@ import Accommodation from './pages/Accomodation';
 import Details from './pages/Details';
 import Footer from './components/ui/Footer';
 import AboutUs from './pages/AboutUs';
+import EventRegistration from './pages/EventRegistration';
+import Events from './pages/Events';
+import Dashboard from './pages/Admin/Dashboard';
+import AdminLayout from './pages/Admin/AdminLayout';
+import RegistrationTable from './pages/Admin/Registration';
+import CreateEvent from './pages/Admin/CreateEvents';
+import AdminEvents from './pages/Admin/Events';
+import AdminUsers from './pages/Admin/User';
+
+
+
 const App = () => {
   return (
     <Router>
@@ -24,9 +35,12 @@ const App = () => {
           
           {/* Protected Routes */}
           <Route path="/event-details/:eventId" element={<Details />} />
-          {/* <Route path="/event-registration/:eventId" element={<EventRegistration />} /> */}
-          
+          <Route path="/event-registration/:eventId" element={<EventRegistration />} />
+          <Route path="/events" element={<Events />} />
 
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />} />
+          
           <Route path="*" element={<Home />} />
         </Routes>
         <Footer />

@@ -60,7 +60,7 @@ const EventDetails = ({ event }) => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8 }}
-                  onError={(e) => (e.target.src = "https://via.placeholder.com/500")}
+                  onError={(e) => (e.target.src = "https://cdn4.iconfinder.com/data/icons/ui-beast-3/32/ui-49-4096.png")}
                 />
               </div>
 
@@ -111,7 +111,9 @@ const EventDetails = ({ event }) => {
 
         {/* Action Buttons */}
         <motion.div className="flex flex-wrap justify-center gap-6 mt-8">
-          <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700">
+          <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700" 
+          onClick={() => window.location.href = `/event-registration/${event.id}`}
+          >
             Register Now
           </Button>
           <Button

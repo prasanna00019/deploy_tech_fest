@@ -4,12 +4,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const AuthenticationCheck = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Public routes that don't require authentication
-  const publicRoutes = ['/', '/login', '/register', '/accommodation', '/about-us'];
-  
+
   // Authentication protected routes
-  const protectedRoutes = ['/events', '/event-details', '/profile'];
+  const protectedRoutes = ['/events', '/event-details', '/profile', '/event-registration', '/events', '/admin'];
 
   useEffect(() => {
     const checkAuth = () => {
