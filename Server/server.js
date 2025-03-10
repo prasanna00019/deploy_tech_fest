@@ -14,7 +14,7 @@ const app = express();
 dotenv.config();
 
 app.use(cors({
-    origin: [process.env.ORIGIN,"http://localhost:5173"],
+    origin: [process.env.ORIGIN,"http://localhost:5173","https://iitram-techfest-2025.netlify.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true
 }));
